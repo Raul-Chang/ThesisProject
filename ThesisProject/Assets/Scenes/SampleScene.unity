@@ -16610,8 +16610,8 @@ MonoBehaviour:
     m_NumColorKeys: 5
     m_NumAlphaKeys: 5
   nightFogColor: {r: 0.05, g: 0.05, b: 0.1, a: 1}
-  dayFogColor: {r: 0.41273585, g: 0.44106835, b: 0.5, a: 1}
-  fogDensityNight: 0.08
+  dayFogColor: {r: 0.26566395, g: 0.27094588, b: 0.2830189, a: 1}
+  fogDensityNight: 0.3
   fogDensityDay: 0
 --- !u!1001 &2045280567
 PrefabInstance:
