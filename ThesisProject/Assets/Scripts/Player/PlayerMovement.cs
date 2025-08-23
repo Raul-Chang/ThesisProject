@@ -14,19 +14,22 @@ public class PlayerMovement : MonoBehaviour
     public Transform playerCamera;
 
     private Rigidbody rb;
+    private Animator animator; 
     private float xRotation = 0f;
     private bool isGrounded;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        Cursor.lockState = CursorLockMode.Locked; // Lock cursor in middle of screen
+        animator = GetComponent<Animator>(); 
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
     {
         HandleMouseLook();
         HandleJump();
+        HandleAnimation(); 
     }
 
     private void FixedUpdate()
@@ -40,12 +43,10 @@ public class PlayerMovement : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
-        // Rotate player horizontally
         transform.Rotate(Vector3.up * mouseX);
 
-        // Rotate camera vertically
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f); // Prevent flipping
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
         playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
     }
 
@@ -58,7 +59,6 @@ public class PlayerMovement : MonoBehaviour
         Vector3 targetVelocity = move * moveSpeed;
         Vector3 velocity = rb.velocity;
 
-        // Keep vertical velocity (gravity/jump)
         targetVelocity.y = velocity.y;
 
         rb.velocity = targetVelocity;
@@ -69,6 +69,8 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
+            
         }
     }
 
@@ -80,9 +82,24 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void HandleAnimation()
+    {
+      
+        Vector3 horizontalVelocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+        float speed = horizontalVelocity.magnitude;
+
+        if (speed > 0.01f)
+        {
+            animator.speed = 3f;
+        }
+        else
+        {
+            animator.speed = 0f;
+        }
+    }
+
     private void OnCollisionStay(Collision collision)
     {
-        // Simple grounded check
         isGrounded = true;
     }
 
@@ -91,4 +108,3 @@ public class PlayerMovement : MonoBehaviour
         isGrounded = false;
     }
 }
-
