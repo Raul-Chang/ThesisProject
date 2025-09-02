@@ -20,6 +20,7 @@ public class DayNightCycle : MonoBehaviour
 
     private float time;
 
+
     void Update()
     {
         if (sun == null) return;

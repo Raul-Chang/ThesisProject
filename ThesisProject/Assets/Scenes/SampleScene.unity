@@ -14,10 +14,10 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 0
-  m_FogColor: {r: 0.084905684, g: 0.084905684, b: 0.084905684, a: 0.7019608}
+  m_Fog: 1
+  m_FogColor: {r: 0.084905684, g: 0.084905684, b: 0.084905684, a: 0.48235294}
   m_FogMode: 2
-  m_FogDensity: 0.05
+  m_FogDensity: 0
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -6140,7 +6140,7 @@ Transform:
   m_GameObject: {fileID: 705507993}
   serializedVersion: 2
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: -27.45, y: 76.16, z: -97.3}
+  m_LocalPosition: {x: -47.1, y: 86.5, z: -63.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -17414,7 +17414,7 @@ Transform:
   m_GameObject: {fileID: 2043518651}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -25.960049, y: -1.7999613, z: -0.08518493}
+  m_LocalPosition: {x: -25.960049, y: 15.2, z: -0.08518493}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -17466,7 +17466,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 5
   nightFogColor: {r: 0.05, g: 0.05, b: 0.1, a: 1}
   dayFogColor: {r: 0.26566395, g: 0.27094588, b: 0.2830189, a: 1}
-  fogDensityNight: 0.3
+  fogDensityNight: 0.2
   fogDensityDay: 0
 --- !u!1001 &2045280567
 PrefabInstance:
