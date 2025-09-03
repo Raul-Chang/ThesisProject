@@ -14,6 +14,8 @@ public class EnemyAI : MonoBehaviour
     private float waitTimer;
     private bool chasing = false;
 
+    public GameObject defeatUI;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -65,6 +67,9 @@ public class EnemyAI : MonoBehaviour
     void RobPlayer()
     {
         Debug.Log("¡El chorro te robó!");
+
+        defeatUI.SetActive(true);
+        Menu.Instance.PauseGame();
         
     }
 }

@@ -5,38 +5,60 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float moveSpeed = 5f;
+    public float walkSpeed = 5f;
+    public float runSpeed = 9f;
+    public float crouchSpeed = 2.5f;
     public float jumpForce = 7f;
     public float gravityMultiplier = 2f;
+
+    [Header("Crouch Settings")]
+    public float crouchHeight = 1f;
+    private float originalHeight;
+    private CapsuleCollider capsule;
 
     [Header("Mouse Look Settings")]
     public float mouseSensitivity = 2f;
     public Transform playerCamera;
 
     private Rigidbody rb;
-    private Animator animator; 
+    private Animator animator;
     private float xRotation = 0f;
     private bool isGrounded;
+
+    private bool isCrouching = false;
+    private float currentSpeed;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        animator = GetComponent<Animator>(); 
+        animator = GetComponent<Animator>();
+        capsule = GetComponent<CapsuleCollider>();
+
         Cursor.lockState = CursorLockMode.Locked;
+
+        originalHeight = capsule.height;
+        currentSpeed = walkSpeed;
     }
 
     private void Update()
     {
+        if (Menu.IsPaused) return; // stop controls when paused
+
         HandleMouseLook();
         HandleJump();
-        HandleAnimation(); 
+        HandleRun();
+        HandleCrouch();
+        HandleAnimation();
     }
 
     private void FixedUpdate()
     {
+        if (Menu.IsPaused) return; // stop physics movement when paused
+
         HandleMovement();
         ApplyExtraGravity();
     }
+
 
     private void HandleMouseLook()
     {
@@ -56,21 +78,58 @@ public class PlayerMovement : MonoBehaviour
         float moveZ = Input.GetAxis("Vertical");
 
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
-        Vector3 targetVelocity = move * moveSpeed;
-        Vector3 velocity = rb.velocity;
+        Vector3 targetPosition = rb.position + move * currentSpeed * Time.fixedDeltaTime;
 
-        targetVelocity.y = velocity.y;
-
-        rb.velocity = targetVelocity;
+        rb.MovePosition(targetPosition);
     }
+
+    //private void HandleMovement()
+    //{
+    //    float moveX = Input.GetAxis("Horizontal");
+    //    float moveZ = Input.GetAxis("Vertical");
+
+    //    Vector3 move = transform.right * moveX + transform.forward * moveZ;
+    //    Vector3 targetVelocity = move * currentSpeed;
+    //    Vector3 velocity = rb.velocity;
+
+    //    targetVelocity.y = velocity.y;
+
+    //    rb.velocity = targetVelocity;
+    //}
 
     private void HandleJump()
     {
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump") && isGrounded && !isCrouching)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
+    }
 
-            
+    private void HandleRun()
+    {
+        if (Input.GetKey(KeyCode.LeftShift) && !isCrouching)
+        {
+            currentSpeed = runSpeed;
+        }
+        else if (!isCrouching)
+        {
+            currentSpeed = walkSpeed;
+        }
+    }
+
+    private void HandleCrouch()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            isCrouching = true;
+            currentSpeed = crouchSpeed;
+            capsule.height = crouchHeight;
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            isCrouching = false;
+            currentSpeed = walkSpeed;
+            capsule.height = originalHeight;
         }
     }
 
@@ -84,7 +143,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleAnimation()
     {
-      
         Vector3 horizontalVelocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         float speed = horizontalVelocity.magnitude;
 
