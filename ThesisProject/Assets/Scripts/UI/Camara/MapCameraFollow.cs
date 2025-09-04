@@ -15,11 +15,11 @@ public class MapCameraFollow : MonoBehaviour
     {
         if (followTarget && target != null)
         {
-            // Sigue al jugador
+           
             transform.position = target.position + offset;
         }
 
-        // Rotación fija top-down
+     
         transform.rotation = Quaternion.Euler(90, 0, 0);
     }
 }

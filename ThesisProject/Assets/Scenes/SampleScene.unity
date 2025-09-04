@@ -19141,6 +19141,7 @@ GameObject:
   - component: {fileID: 1975185564}
   - component: {fileID: 1975185563}
   - component: {fileID: 1975185566}
+  - component: {fileID: 1975185567}
   m_Layer: 5
   m_Name: MapCamera
   m_TagString: Untagged
@@ -19237,6 +19238,18 @@ MonoBehaviour:
   target: {fileID: 855594750}
   offset: {x: -19.6, y: 253.2, z: 13.6}
   followTarget: 0
+--- !u!114 &1975185567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1975185562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4699408c4a2143242aa0903628d6624c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1978092792 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7289998643497998662, guid: a70b9db4c9ca9454483179f178e4aeee, type: 3}
