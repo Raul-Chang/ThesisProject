@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -20,10 +18,14 @@ public class PlayerMovement : MonoBehaviour
     public float mouseSensitivity = 2f;
     public Transform playerCamera;
 
+    [Header("Ground Check")]
+    public float groundCheckDistance = 0.2f;
+    public LayerMask groundMask;
+
     private Rigidbody rb;
     private Animator animator;
     private float xRotation = 0f;
-    private bool isGrounded;
+    public bool isGrounded;
 
     private bool isCrouching = false;
     private float currentSpeed;
@@ -38,11 +40,16 @@ public class PlayerMovement : MonoBehaviour
 
         originalHeight = capsule.height;
         currentSpeed = walkSpeed;
+
+        rb.interpolation = RigidbodyInterpolation.Interpolate; // smooth physics
+        rb.freezeRotation = true; // prevent Rigidbody from tipping over
     }
 
     private void Update()
     {
-        if (Menu.IsPaused) return; // stop controls when paused
+        if (Menu.IsPaused) return;
+
+        isGrounded = CheckGrounded();
 
         HandleMouseLook();
         HandleJump();
@@ -53,12 +60,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Menu.IsPaused) return; // stop physics movement when paused
+        if (Menu.IsPaused) return;
 
         HandleMovement();
         ApplyExtraGravity();
     }
-
 
     private void HandleMouseLook()
     {
@@ -78,24 +84,10 @@ public class PlayerMovement : MonoBehaviour
         float moveZ = Input.GetAxis("Vertical");
 
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
-        Vector3 targetPosition = rb.position + move * currentSpeed * Time.fixedDeltaTime;
+        Vector3 moveDirection = move.normalized * currentSpeed * Time.fixedDeltaTime;
 
-        rb.MovePosition(targetPosition);
+        rb.MovePosition(rb.position + moveDirection);
     }
-
-    //private void HandleMovement()
-    //{
-    //    float moveX = Input.GetAxis("Horizontal");
-    //    float moveZ = Input.GetAxis("Vertical");
-
-    //    Vector3 move = transform.right * moveX + transform.forward * moveZ;
-    //    Vector3 targetVelocity = move * currentSpeed;
-    //    Vector3 velocity = rb.velocity;
-
-    //    targetVelocity.y = velocity.y;
-
-    //    rb.velocity = targetVelocity;
-    //}
 
     private void HandleJump()
     {
@@ -137,7 +129,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isGrounded)
         {
-            rb.AddForce(Vector3.down * gravityMultiplier, ForceMode.Acceleration);
+            rb.AddForce(Physics.gravity * (gravityMultiplier - 1f), ForceMode.Acceleration);
         }
     }
 
@@ -146,23 +138,18 @@ public class PlayerMovement : MonoBehaviour
         Vector3 horizontalVelocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         float speed = horizontalVelocity.magnitude;
 
-        if (speed > 0.01f)
-        {
-            animator.speed = 3f;
-        }
-        else
-        {
-            animator.speed = 0f;
-        }
+        //if (speed > 0.01f)
+        //{
+        //    animator.speed = 3f;
+        //}
+        //else
+        //{
+        //    animator.speed = 0f;
+        //}
     }
 
-    private void OnCollisionStay(Collision collision)
+    private bool CheckGrounded()
     {
-        isGrounded = true;
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        isGrounded = false;
+        return Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundMask);
     }
 }
