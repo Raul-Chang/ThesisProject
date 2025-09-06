@@ -20,6 +20,14 @@ public class DayNightCycle : MonoBehaviour
 
     private float time;
 
+    void Start()
+    {
+        if (sun != null)
+        {
+            // Excluir capa "Minimap" de la luz solar
+            sun.cullingMask &= ~(1 << LayerMask.NameToLayer("Minimap"));
+        }
+    }
 
     void Update()
     {
