@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI; // For stamina UI
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -22,15 +23,24 @@ public class PlayerMovement : MonoBehaviour
     public float groundCheckDistance = 0.2f;
     public LayerMask groundMask;
 
+    [Header("Stamina Settings")]
+    public float stamina = 5f;
+    public float maxStamina = 5f;
+    public float staminaDrainRate = 1f;   
+    public float staminaRegenRate = 1f;   
+    public float regenDelay = 2f;         
+    public Slider staminaBar;             
+
+    private float lastStaminaUseTime;     
+
     private Rigidbody rb;
     private Animator animator;
     private float xRotation = 0f;
-    public bool isGrounded;
-
+    private bool isGrounded;
     private bool isCrouching = false;
     private float currentSpeed;
 
-    private void Start()
+    void Start()
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
@@ -41,11 +51,18 @@ public class PlayerMovement : MonoBehaviour
         originalHeight = capsule.height;
         currentSpeed = walkSpeed;
 
-        rb.interpolation = RigidbodyInterpolation.Interpolate; // smooth physics
-        rb.freezeRotation = true; // prevent Rigidbody from tipping over
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
+        rb.freezeRotation = true;
+
+        if (staminaBar != null)
+        {
+            staminaBar.minValue = 0f;
+            staminaBar.maxValue = maxStamina;
+            staminaBar.value = stamina;
+        }
     }
 
-    private void Update()
+    void Update()
     {
         if (Menu.IsPaused) return;
 
@@ -56,9 +73,10 @@ public class PlayerMovement : MonoBehaviour
         HandleRun();
         HandleCrouch();
         HandleAnimation();
+        HandleStamina();
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         if (Menu.IsPaused) return;
 
@@ -99,14 +117,20 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleRun()
     {
-        if (Input.GetKey(KeyCode.LeftShift) && !isCrouching)
+        bool tryingToRun = Input.GetKey(KeyCode.LeftShift) && !isCrouching;
+
+        if (tryingToRun && stamina > 0f)
         {
             currentSpeed = runSpeed;
+            stamina -= staminaDrainRate * Time.deltaTime;
+            lastStaminaUseTime = Time.time; // reset regen timer
         }
-        else if (!isCrouching)
+        else
         {
-            currentSpeed = walkSpeed;
+            currentSpeed = isCrouching ? crouchSpeed : walkSpeed;
         }
+
+        stamina = Mathf.Clamp(stamina, 0f, maxStamina);
     }
 
     private void HandleCrouch()
@@ -138,18 +162,29 @@ public class PlayerMovement : MonoBehaviour
         Vector3 horizontalVelocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         float speed = horizontalVelocity.magnitude;
 
-        //if (speed > 0.01f)
-        //{
-        //    animator.speed = 3f;
-        //}
-        //else
-        //{
-        //    animator.speed = 0f;
-        //}
+        if (speed > 0.01f)
+            animator.speed = 3f;
+        else
+            animator.speed = 0f;
     }
 
     private bool CheckGrounded()
     {
         return Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundMask);
+    }
+
+    private void HandleStamina()
+    {
+        bool running = Input.GetKey(KeyCode.LeftShift) && !isCrouching && stamina > 0f;
+
+        if (!running && Time.time > lastStaminaUseTime + regenDelay)
+        {
+            stamina += staminaRegenRate * Time.deltaTime;
+        }
+
+        stamina = Mathf.Clamp(stamina, 0f, maxStamina);
+
+        if (staminaBar != null)
+            staminaBar.value = stamina;
     }
 }
