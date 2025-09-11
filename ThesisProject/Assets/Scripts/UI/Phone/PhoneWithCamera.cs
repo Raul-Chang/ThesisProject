@@ -8,14 +8,16 @@ public class PhoneWithCamera : MonoBehaviour
     [Header("Config")]
     public KeyCode toggleKey = KeyCode.F;
     public GameObject phoneUI;
-    public int maxBattery = 3;
+    public int maxBattery = 4; 
     private int currentBattery;
     private bool isPhoneOpen = false;
 
     [Header("UI de batería")]
-    public Image[] batteryIcons;
-    public Sprite batteryOnSprite;
-    public Sprite batteryOffSprite;
+    public GameObject batteryFull;   
+    public GameObject batteryHalf;   
+    public GameObject batteryEmpty; 
+    public GameObject Bateria; 
+    public GameObject Bateria2; 
 
     void Start()
     {
@@ -36,15 +38,18 @@ public class PhoneWithCamera : MonoBehaviour
     {
         if (isPhoneOpen)
         {
+            
             phoneUI.SetActive(false);
             isPhoneOpen = false;
         }
         else
         {
+            
             if (currentBattery > 0)
             {
                 phoneUI.SetActive(true);
                 isPhoneOpen = true;
+
                 currentBattery--;
                 UpdateBatteryUI();
             }
@@ -57,16 +62,38 @@ public class PhoneWithCamera : MonoBehaviour
 
     void UpdateBatteryUI()
     {
-        for (int i = 0; i < batteryIcons.Length; i++)
+        
+        batteryFull.SetActive(false);
+        batteryHalf.SetActive(false);
+        batteryEmpty.SetActive(false);
+        Bateria.SetActive(false);
+        Bateria2.SetActive(false);
+
+
+        if (currentBattery == 4)
         {
-            bool isOn = i < currentBattery;
-            if (batteryIcons[i] != null)
-            {
-                if (batteryOnSprite && batteryOffSprite)
-                    batteryIcons[i].sprite = isOn ? batteryOnSprite : batteryOffSprite;
-                else
-                    batteryIcons[i].enabled = isOn;
-            }
+            Bateria.SetActive(true);
+            
+        }
+        else if (currentBattery == 3)
+        {
+            batteryFull.SetActive(true);
+            
+        }
+        else if (currentBattery == 2)
+        {
+            batteryHalf.SetActive(true);
+           
+        }
+        else if (currentBattery == 1)
+        {
+            batteryEmpty.SetActive(true);
+            
+        }
+        else if (currentBattery == 0)
+        {
+            Bateria2.SetActive(true);
+
         }
     }
 }
