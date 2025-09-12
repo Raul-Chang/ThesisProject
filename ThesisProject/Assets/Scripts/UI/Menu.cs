@@ -9,6 +9,10 @@ public class Menu : MonoBehaviour
 
     public static bool IsPaused { get; private set; } = false;
 
+   //public GameObject MenuBG;
+   // public GameObject OptionBG;
+   // public GameObject RestartConfirmBG;
+   // public GameObject MainMenuConfirmBG; 
     void Awake()
     {
         // Ensure only one instance exists
@@ -23,19 +27,25 @@ public class Menu : MonoBehaviour
     }
     private void Start()
     {
-        ResumeGame();
+      //  ResumeGame();
     }
 
     void Update()
     {
         // Test Menu
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (IsPaused)
-                ResumeGame();
-            else
-                PauseGame();
-        }
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    if (IsPaused)
+        //    {
+        //        ResumeGame();
+        //        //MenuBG.SetActive(false);
+        //    }
+        //    else
+        //    {
+        //        PauseGame();
+
+        //    }
+        //}
     }
 
     public void PauseGame()
@@ -58,7 +68,8 @@ public class Menu : MonoBehaviour
 
     public void RestartGame()
     {
-        // Reloads the current scene
+        // Reloads the current
+        ResumeGame();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -73,6 +84,11 @@ public class Menu : MonoBehaviour
         // Stops play mode in the editor
         UnityEditor.EditorApplication.isPlaying = false;
         #endif
+    }
+
+    public void MainMenuGo()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }
 
