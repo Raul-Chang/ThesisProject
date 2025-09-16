@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
-using UnityEngine.AI; 
+using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
-    public float visionRange = 5f;       
-    public float robberyDistance = 1.5f; 
-    public Transform[] patrolPoints;      
-    public float waitTime = 2f;           
+    public float visionRange = 5f;
+    public float robberyDistance = 1.5f;
+    public float waitTime = 2f;
 
     private Transform player;
     private NavMeshAgent agent;
-    private int currentPoint = 0;
     private float waitTimer;
     private bool chasing = false;
+
+    private Waypoint currentWaypoint;
 
     public GameObject defeatUI;
 
@@ -20,7 +20,10 @@ public class EnemyAI : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
-        GoToNextPoint();
+
+       
+        currentWaypoint = FindClosestWaypoint();
+        GoToNextWaypoint();
     }
 
     void Update()
@@ -31,45 +34,69 @@ public class EnemyAI : MonoBehaviour
         if (distanceToPlayer <= visionRange)
         {
             chasing = true;
-            agent.SetDestination(player.position);
         }
-        else if (chasing && distanceToPlayer > visionRange * 1.5f) 
+        else if (chasing && distanceToPlayer > visionRange * 1.5f)
         {
             chasing = false;
-            GoToNextPoint();
+            GoToNextWaypoint();
         }
 
-        
-        if (!chasing && !agent.pathPending && agent.remainingDistance < 0.3f)
+        if (chasing)
+        {
+            agent.SetDestination(player.position);
+        }
+        else if (!agent.pathPending && agent.remainingDistance < 0.3f)
         {
             waitTimer += Time.deltaTime;
             if (waitTimer >= waitTime)
             {
-                GoToNextPoint();
+                GoToNextWaypoint();
                 waitTimer = 0f;
             }
         }
 
-       
         if (chasing && distanceToPlayer <= robberyDistance)
         {
             RobPlayer();
         }
     }
 
-    void GoToNextPoint()
+    void GoToNextWaypoint()
     {
-        if (patrolPoints.Length == 0) return;
-        agent.SetDestination(patrolPoints[currentPoint].position);
-        currentPoint = (currentPoint + 1) % patrolPoints.Length;
+        if (currentWaypoint == null || currentWaypoint.connectedWaypoints.Length == 0) return;
+
+        
+        Waypoint nextWaypoint = currentWaypoint.connectedWaypoints[
+            Random.Range(0, currentWaypoint.connectedWaypoints.Length)
+        ];
+
+        currentWaypoint = nextWaypoint;
+        agent.SetDestination(currentWaypoint.transform.position);
+    }
+
+    Waypoint FindClosestWaypoint()
+    {
+        Waypoint[] allWaypoints = FindObjectsOfType<Waypoint>();
+        Waypoint closest = null;
+        float minDist = Mathf.Infinity;
+
+        foreach (var wp in allWaypoints)
+        {
+            float dist = Vector3.Distance(transform.position, wp.transform.position);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                closest = wp;
+            }
+        }
+
+        return closest;
     }
 
     void RobPlayer()
     {
         Debug.Log("¡El chorro te robó!");
-
         defeatUI.SetActive(true);
         Menu.Instance.PauseGame();
-        
     }
 }
