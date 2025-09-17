@@ -3,6 +3,7 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
+    [Header("Configuración de visión y robo")]
     public float visionRange = 5f;
     public float robberyDistance = 1.5f;
     public float waitTime = 2f;
@@ -12,25 +13,53 @@ public class EnemyAI : MonoBehaviour
     private float waitTimer;
     private bool chasing = false;
 
+    [Header("Waypoints")]
     private Waypoint currentWaypoint;
-
-    //public GameObject defeatUI;
+    private Waypoint[] allWaypoints;
+    private Waypoint startWaypoint;
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj == null)
+        {
+            Debug.LogError("EnemyAI: No se encontró ningún objeto con tag 'Player'");
+            return;
+        }
+        player = playerObj.transform;
+
+        
         agent = GetComponent<NavMeshAgent>();
+        if (agent == null)
+        {
+            Debug.LogError("EnemyAI: No se encontró componente NavMeshAgent en " + gameObject.name);
+            return;
+        }
 
        
+        allWaypoints = FindObjectsOfType<Waypoint>();
+        Debug.Log("EnemyAI: Waypoints encontrados = " + allWaypoints.Length);
+
         currentWaypoint = FindClosestWaypoint();
+        startWaypoint = currentWaypoint;
+
+        if (currentWaypoint == null)
+        {
+            Debug.LogError("EnemyAI: No se encontró ningún waypoint cercano para " + gameObject.name);
+            return;
+        }
+
         GoToNextWaypoint();
     }
 
     void Update()
     {
+        if (player == null || agent == null) return;
+
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-       
+        
         if (distanceToPlayer <= visionRange)
         {
             chasing = true;
@@ -41,10 +70,12 @@ public class EnemyAI : MonoBehaviour
             GoToNextWaypoint();
         }
 
+        
         if (chasing)
         {
             agent.SetDestination(player.position);
         }
+       
         else if (!agent.pathPending && agent.remainingDistance < 0.3f)
         {
             waitTimer += Time.deltaTime;
@@ -55,6 +86,7 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
+       
         if (chasing && distanceToPlayer <= robberyDistance)
         {
             RobPlayer();
@@ -63,20 +95,36 @@ public class EnemyAI : MonoBehaviour
 
     void GoToNextWaypoint()
     {
-        if (currentWaypoint == null || currentWaypoint.connectedWaypoints.Length == 0) return;
+        if (agent == null)
+        {
+            Debug.LogError("EnemyAI: NavMeshAgent es NULL en " + gameObject.name);
+            return;
+        }
 
-        
-        Waypoint nextWaypoint = currentWaypoint.connectedWaypoints[
-            Random.Range(0, currentWaypoint.connectedWaypoints.Length)
-        ];
+        if (currentWaypoint == null)
+        {
+            Debug.LogError("EnemyAI: currentWaypoint es NULL en " + gameObject.name);
+            return;
+        }
 
-        currentWaypoint = nextWaypoint;
+        if (currentWaypoint.connectedWaypoints == null || currentWaypoint.connectedWaypoints.Length == 0)
+        {
+            Debug.LogWarning("EnemyAI: No hay waypoints conectados, volviendo al inicial.");
+            currentWaypoint = startWaypoint;
+        }
+        else
+        {
+            Waypoint nextWaypoint = currentWaypoint.connectedWaypoints[
+                Random.Range(0, currentWaypoint.connectedWaypoints.Length)
+            ];
+            currentWaypoint = nextWaypoint;
+        }
+
         agent.SetDestination(currentWaypoint.transform.position);
     }
 
     Waypoint FindClosestWaypoint()
     {
-        Waypoint[] allWaypoints = FindObjectsOfType<Waypoint>();
         Waypoint closest = null;
         float minDist = Mathf.Infinity;
 
@@ -96,8 +144,11 @@ public class EnemyAI : MonoBehaviour
     void RobPlayer()
     {
         Debug.Log("¡El chorro te robó!");
-        //defeatUI.SetActive(true);
-        Menu.Instance.ShowDefeat();
-        Menu.Instance.PauseGame();
+        
+        if (Menu.Instance != null)
+        {
+            Menu.Instance.ShowDefeat();
+            Menu.Instance.PauseGame();
+        }
     }
 }
