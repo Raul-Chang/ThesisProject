@@ -27,7 +27,7 @@ public class Menu : MonoBehaviour
     }
     private void Start()
     {
-      //  ResumeGame();
+        ResumeGame();
     }
 
     void Update()
