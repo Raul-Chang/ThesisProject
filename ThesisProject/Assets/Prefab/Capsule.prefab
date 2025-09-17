@@ -122,9 +122,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visionRange: 5
-  robberyDistance: 1.5
+  robberyDistance: 1.6
   waitTime: 2
-  defeatUI: {fileID: 0}
 --- !u!195 &5351457746500098259
 NavMeshAgent:
   m_ObjectHideFlags: 0

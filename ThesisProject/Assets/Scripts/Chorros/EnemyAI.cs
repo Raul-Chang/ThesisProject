@@ -14,7 +14,7 @@ public class EnemyAI : MonoBehaviour
 
     private Waypoint currentWaypoint;
 
-    public GameObject defeatUI;
+    //public GameObject defeatUI;
 
     void Start()
     {
@@ -96,7 +96,8 @@ public class EnemyAI : MonoBehaviour
     void RobPlayer()
     {
         Debug.Log("¡El chorro te robó!");
-        defeatUI.SetActive(true);
+        //defeatUI.SetActive(true);
+        Menu.Instance.ShowDefeat();
         Menu.Instance.PauseGame();
     }
 }

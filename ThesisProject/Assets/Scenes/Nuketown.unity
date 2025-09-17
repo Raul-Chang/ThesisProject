@@ -11038,7 +11038,6 @@ MonoBehaviour:
   visionRange: 5
   robberyDistance: 1.5
   waitTime: 2
-  defeatUI: {fileID: 1075977407}
 --- !u!136 &1428688729
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -17352,6 +17351,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5a6ad86ce7f7724a950175d5ed63ae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DefeatBG: {fileID: 1075977407}
+  VictoryBG: {fileID: 208911675}
 --- !u!1001 &1685434528
 PrefabInstance:
   m_ObjectHideFlags: 0

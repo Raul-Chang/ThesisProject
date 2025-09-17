@@ -9,8 +9,8 @@ public class Menu : MonoBehaviour
 
     public static bool IsPaused { get; private set; } = false;
 
-   //public GameObject MenuBG;
-   // public GameObject OptionBG;
+   public GameObject DefeatBG;
+    public GameObject VictoryBG;
    // public GameObject RestartConfirmBG;
    // public GameObject MainMenuConfirmBG; 
     void Awake()
@@ -89,6 +89,16 @@ public class Menu : MonoBehaviour
     public void MainMenuGo()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void ShowVictory()
+    {
+        VictoryBG.SetActive(true);
+    }
+
+    public void ShowDefeat()
+    {
+        DefeatBG.SetActive(true);
     }
 }
 
