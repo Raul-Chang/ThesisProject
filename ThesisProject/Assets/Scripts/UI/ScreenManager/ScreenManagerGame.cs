@@ -14,12 +14,23 @@ public class ScreenManagerGame : MonoBehaviour
 
     [SerializeField] private OptionsScreen _optionScreen;
 
+    [SerializeField] private GameObject _menu;
+
+    [SerializeField] private GameObject _option;
+
 
     private void Awake()
     {
         Instance = this;
 
         _screensStack = new Stack<IScreen>();
+    }
+
+    private void Start()
+    {
+        _menu.SetActive(true);
+        _option.SetActive(true);
+
     }
 
     public void Push(IScreen newScreen)
@@ -77,11 +88,15 @@ public class ScreenManagerGame : MonoBehaviour
     {
         if (_screensStack.Count <= 1)
         {
+            
             Push(_menuScreen);
+
+            
         }
         else
         {
             Pop();
+            
         }
     }
 
@@ -89,7 +104,6 @@ public class ScreenManagerGame : MonoBehaviour
     {
         
             Push(_optionScreen);
-            
     }
 }
 
