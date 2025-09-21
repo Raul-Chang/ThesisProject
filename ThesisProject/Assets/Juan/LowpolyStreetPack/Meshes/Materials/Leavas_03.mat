@@ -31,14 +31,14 @@ Material:
     m_Floats:
     - _Cutoff: 0.3
     - _ShadowStrength: 0.4642857
-    - _Shininess: 0.7
+    - _Shininess: 1
     - _SquashAmount: 1
     - _TranslucencyViewDependency: 0.7
     m_Colors:
     - _Color: {r: 0.74264705, g: 0.47631845, b: 0, a: 1}
     - _EmisColor: {r: 0.74264705, g: 0.44558826, b: 0, a: 0}
-    - _Emission: {r: 0.46323532, g: 0.28752163, b: 0.020436844, a: 0}
+    - _Emission: {r: 0.0754717, g: 0.07334516, b: 0.07013172, a: 0}
     - _Scale: {r: 1, g: 1, b: 1, a: 1}
-    - _SpecColor: {r: 1, g: 1, b: 1, a: 0}
+    - _SpecColor: {r: 0, g: 0, b: 0, a: 0}
     - _TranslucencyColor: {r: 0.8602941, g: 0.37378293, b: 0, a: 1}
   m_BuildTextureStacks: []

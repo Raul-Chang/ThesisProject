@@ -5040,7 +5040,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lampLight: {fileID: 601105605819605600}
   minIntensity: 0.5
-  maxIntensity: 2
+  maxIntensity: 25
   flickerSpeed: 10
   blackoutEnabled: 1
   blackoutInterval: {x: 8, y: 20}
