@@ -8,6 +8,13 @@ public class EnemyAI : MonoBehaviour
     public float robberyDistance = 1.5f;
     public float waitTime = 2f;
 
+    [Header("Anticipación Visual")]
+    [Tooltip("Distancia a la que se activa el material de alerta (debe ser mayor que visionRange).")]
+    public float alertRange = 8f;
+    public Material alertMat;          
+    private Material originalMat;      
+    private Renderer rend;            
+
     private Transform player;
     private NavMeshAgent agent;
     private float waitTimer;
@@ -20,7 +27,7 @@ public class EnemyAI : MonoBehaviour
 
     void Start()
     {
-        
+       
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj == null)
         {
@@ -29,12 +36,23 @@ public class EnemyAI : MonoBehaviour
         }
         player = playerObj.transform;
 
-        
+       
         agent = GetComponent<NavMeshAgent>();
         if (agent == null)
         {
             Debug.LogError("EnemyAI: No se encontró componente NavMeshAgent en " + gameObject.name);
             return;
+        }
+
+       
+        rend = GetComponentInChildren<Renderer>();
+        if (rend != null)
+        {
+            originalMat = rend.material;
+        }
+        else
+        {
+            Debug.LogWarning("EnemyAI: No se encontró Renderer en hijos de " + gameObject.name);
         }
 
        
@@ -59,7 +77,16 @@ public class EnemyAI : MonoBehaviour
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        
+        // ===== FEEDBACK VISUAL =====
+        if (rend != null && alertMat != null)
+        {
+            if (distanceToPlayer <= alertRange)
+                rend.material = alertMat;
+            else
+                rend.material = originalMat;
+        }
+
+        // ===== PERSECUCIÓN =====
         if (distanceToPlayer <= visionRange)
         {
             chasing = true;
@@ -70,12 +97,10 @@ public class EnemyAI : MonoBehaviour
             GoToNextWaypoint();
         }
 
-        
         if (chasing)
         {
             agent.SetDestination(player.position);
         }
-       
         else if (!agent.pathPending && agent.remainingDistance < 0.3f)
         {
             waitTimer += Time.deltaTime;
@@ -86,7 +111,7 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
-       
+        // ===== ROBO =====
         if (chasing && distanceToPlayer <= robberyDistance)
         {
             RobPlayer();
@@ -95,11 +120,7 @@ public class EnemyAI : MonoBehaviour
 
     void GoToNextWaypoint()
     {
-        if (agent == null)
-        {
-            Debug.LogError("EnemyAI: NavMeshAgent es NULL en " + gameObject.name);
-            return;
-        }
+        if (agent == null) return;
 
         if (currentWaypoint == null)
         {
@@ -144,7 +165,7 @@ public class EnemyAI : MonoBehaviour
     void RobPlayer()
     {
         Debug.Log("¡El chorro te robó!");
-        
+
         if (Menu.Instance != null)
         {
             Menu.Instance.ShowDefeat();
