@@ -26,19 +26,21 @@ public class PlayerMovement : MonoBehaviour
     [Header("Stamina Settings")]
     public float stamina = 5f;
     public float maxStamina = 5f;
-    public float staminaDrainRate = 1f;   
-    public float staminaRegenRate = 1f;   
-    public float regenDelay = 2f;         
-    public Slider staminaBar;             
+    public float staminaDrainRate = 1f;
+    public float staminaRegenRate = 1f;
+    public float regenDelay = 2f;
+    public Slider staminaBar;
 
-    private float lastStaminaUseTime;     
-
+    private float lastStaminaUseTime;
     private Rigidbody rb;
     private Animator animator;
     private float xRotation = 0f;
     private bool isGrounded;
     private bool isCrouching = false;
     private float currentSpeed;
+
+    // ?? NEW: flag set by Paranoia
+    [HideInInspector] public bool runLockedByParanoia = false;
 
     void Start()
     {
@@ -119,11 +121,18 @@ public class PlayerMovement : MonoBehaviour
     {
         bool tryingToRun = Input.GetKey(KeyCode.LeftShift) && !isCrouching;
 
+        // ? If paranoia locked running, always walk
+        if (runLockedByParanoia)
+        {
+            currentSpeed = isCrouching ? crouchSpeed : walkSpeed;
+            return;
+        }
+
         if (tryingToRun && stamina > 0f)
         {
             currentSpeed = runSpeed;
             stamina -= staminaDrainRate * Time.deltaTime;
-            lastStaminaUseTime = Time.time; // reset regen timer
+            lastStaminaUseTime = Time.time;
         }
         else
         {
@@ -162,10 +171,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 horizontalVelocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         float speed = horizontalVelocity.magnitude;
 
-        if (speed > 0.01f)
-            animator.speed = 3f;
-        else
-            animator.speed = 0f;
+        animator.speed = (speed > 0.01f) ? 3f : 0f;
     }
 
     private bool CheckGrounded()

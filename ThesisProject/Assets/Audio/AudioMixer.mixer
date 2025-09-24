@@ -13,6 +13,10 @@ AudioMixerGroupController:
   - {fileID: -1547027621858716834}
   - {fileID: -5261791623754177461}
   - {fileID: -2906697496714574562}
+  - {fileID: -8638881876828382291}
+  - {fileID: 816918810270863725}
+  - {fileID: -5566735742357872217}
+  - {fileID: -841828887534560484}
   m_Volume: a02f1c10f5b4a8b488585db0778ea231
   m_Pitch: 9414d43270f949243907f9874163e45b
   m_Send: 00000000000000000000000000000000
@@ -36,6 +40,72 @@ AudioMixerEffectController:
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
+--- !u!243 &-8638881876828382291
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Paranoia1
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 3da61bb503aeddf489079a1d973f43e5
+  m_Children: []
+  m_Volume: 378023c475974304da768b606616c3e0
+  m_Pitch: 8af246d0621c5624d8a29625333b0afa
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -4475410919214314055}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &-7265647348003406780
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 242b51a7dacf0db48964d63c4874dbee
+  m_EffectName: Attenuation
+  m_MixLevel: d163073777467ec4bb0e6e9e581053b5
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!244 &-7032271673854714849
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 5fb0a33682dfc9b44990d3d2fc32050d
+  m_EffectName: Attenuation
+  m_MixLevel: cf6c42bef69112b48960f83ef136be23
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!243 &-5566735742357872217
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Paranoia3
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: dfa293f0bf7f9424aa18dff4226bcc42
+  m_Children: []
+  m_Volume: 3034cb2d0e2970149aa94e6e542589ad
+  m_Pitch: df6372c6bc9bce2429d6cf76953c871a
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -7032271673854714849}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
 --- !u!243 &-5261791623754177461
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
@@ -55,6 +125,20 @@ AudioMixerGroupController:
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
+--- !u!244 &-4475410919214314055
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 3e69c44d53c830d40b95baa8b6b95331
+  m_EffectName: Attenuation
+  m_MixLevel: c3daf4cf1cb0a2546afb7268bc3d21f4
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!243 &-2906697496714574562
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
@@ -121,6 +205,25 @@ AudioMixerEffectController:
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
+--- !u!243 &-841828887534560484
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Paranoia4
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 89ea9992f60895044a0310d99ec5f018
+  m_Children: []
+  m_Volume: bce2869fbefc3e648b316a99f89f56f1
+  m_Pitch: efe08d4cb70c3364ca5e7023f222b9e6
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: 6368512477961604929}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
 --- !u!244 &-307483459368921204
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -159,6 +262,10 @@ AudioMixerController:
     - d36db2b87aad3994ba1bc6c853932f3e
     - 7b8fc65195473e0439adc6f671af3b1c
     - 09786b594aac15048b92446b18fdfacf
+    - 3da61bb503aeddf489079a1d973f43e5
+    - b710def893ea5764c86469424ff8e635
+    - dfa293f0bf7f9424aa18dff4226bcc42
+    - 89ea9992f60895044a0310d99ec5f018
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -206,8 +313,42 @@ AudioMixerSnapshotController:
   m_Name: Snapshot
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: eab3243d2b248d442870764a501c361f
-  m_FloatValues: {}
+  m_FloatValues:
+    a02f1c10f5b4a8b488585db0778ea231: 0
   m_TransitionOverrides: {}
+--- !u!243 &816918810270863725
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Paranoia2
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: b710def893ea5764c86469424ff8e635
+  m_Children: []
+  m_Volume: 9975cf7b26c29224cb1e35e5d473623b
+  m_Pitch: 9a4249cec017fa54cadcdd6c7ba68fef
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -7265647348003406780}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &6368512477961604929
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 6ece82c0744939840bdfad2cf4472e89
+  m_EffectName: Attenuation
+  m_MixLevel: c10f143ccb383494f8cbc516258acd2c
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!243 &8050271529382342742
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
