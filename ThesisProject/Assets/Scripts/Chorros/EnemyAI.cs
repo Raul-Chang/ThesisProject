@@ -9,7 +9,7 @@ public class EnemyAI : MonoBehaviour
     public float waitTime = 2f;
 
     [Header("Anticipación Visual")]
-    [Tooltip("Distancia a la que se activa el material de alerta (debe ser mayor que visionRange).")]
+  
     public float alertRange = 8f;
     public Material alertMat;          
     private Material originalMat;      
@@ -80,19 +80,20 @@ public class EnemyAI : MonoBehaviour
         // ===== FEEDBACK VISUAL =====
         if (rend != null && alertMat != null)
         {
-            if (distanceToPlayer <= alertRange)
+            if (PlayerVisible())
                 rend.material = alertMat;
             else
                 rend.material = originalMat;
         }
 
         // ===== PERSECUCIÓN =====
-        if (distanceToPlayer <= visionRange)
+        if (PlayerVisible())
         {
             chasing = true;
         }
-        else if (chasing && distanceToPlayer > visionRange * 1.5f)
+        else if (chasing)
         {
+          
             chasing = false;
             GoToNextWaypoint();
         }
@@ -160,6 +161,19 @@ public class EnemyAI : MonoBehaviour
         }
 
         return closest;
+    }
+    bool PlayerVisible()
+    {
+        Vector3 dir = (player.position - transform.position).normalized;
+       
+        Vector3 origin = transform.position + Vector3.up * 0.5f;
+
+        if (Physics.Raycast(origin, dir, out RaycastHit hit, visionRange))
+        {
+           
+            return hit.collider.CompareTag("Player");
+        }
+        return false;
     }
 
     void RobPlayer()
