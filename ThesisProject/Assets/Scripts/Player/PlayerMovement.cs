@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI; // For stamina UI
 
 public class PlayerMovement : MonoBehaviour
@@ -104,10 +104,32 @@ public class PlayerMovement : MonoBehaviour
         float moveZ = Input.GetAxis("Vertical");
 
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
-        Vector3 moveDirection = move.normalized * currentSpeed * Time.fixedDeltaTime;
+        Vector3 moveDirection = move.normalized * currentSpeed;
 
-        rb.MovePosition(rb.position + moveDirection);
+        if (move.magnitude > 0.1f)
+        {
+            // Move actively
+            rb.velocity = new Vector3(moveDirection.x, rb.velocity.y, moveDirection.z);
+        }
+        else
+        {
+            if (currentSpeed == runSpeed)
+            {
+                // Running → keep a little inertia
+                rb.velocity = new Vector3(
+                    Mathf.Lerp(rb.velocity.x, 0, Time.fixedDeltaTime * 2f),
+                    rb.velocity.y,
+                    Mathf.Lerp(rb.velocity.z, 0, Time.fixedDeltaTime * 2f)
+                );
+            }
+            else
+            {
+                // Walking / crouching → stop immediately
+                rb.velocity = new Vector3(0, rb.velocity.y, 0);
+            }
+        }
     }
+
 
     private void HandleJump()
     {

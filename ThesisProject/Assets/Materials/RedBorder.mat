@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Hidden_Fisheye
-  m_Shader: {fileID: 4800000, guid: 94b30a5f6d6b8c54f9ca05a6353e704c, type: 3}
+  m_Name: RedBorder
+  m_Shader: {fileID: 4800000, guid: d6033f4a7d458be4da98f47758b0d2ac, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []

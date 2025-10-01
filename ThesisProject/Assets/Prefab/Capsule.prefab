@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visionRange: 5
-  robberyDistance: 1.6
+  robberyDistance: 1.8
   waitTime: 2
   alertRange: 8
   alertMat: {fileID: 2100000, guid: 476000ef386781047b7c2483d2b0b5c7, type: 2}
